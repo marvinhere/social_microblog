@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create Username</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="container">
+    <form [formGroup]="usernameForm" (ngSubmit)="save(usernameForm.value)">
+      <span class="label">You need a username</span>
+      <ion-list>
+        <ion-item>
+          <ion-label>Username</ion-label>
+          <ion-input formControlName="username"></ion-input>
+        </ion-item>
+      </ion-list>
+  
+      <span class="error" *ngIf="error">Username already exist</span>
+      
+      <div class="container-center">
+        <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+        <button type="submit" class="button" *ngIf="!loading">Save</button>
+      </div>
+    </form>
+   
+  </div>
+
+</ion-content>

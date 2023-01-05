@@ -1,20 +1,216 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border" mode="md">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-buttons slot="primary">
+     
+      <ion-button>
+        <ion-menu-button autocapitalize="false" style="color: black;"></ion-menu-button>
+        
+      </ion-button>
+    </ion-buttons>
+    
+    <ion-title style="font-weight: bold; color: black; font-family: 'Work Sans', sans-serif;">Xiflat</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-menu side="end" menuId="first" contentId="main">
+  <ion-header class="ion-no-border">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title color="dark"><strong>Xiflat Menú</strong></ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>Iniciar Sesión</ion-item>
+      <ion-item>Crear nueva cuenta</ion-item>
+      <ion-item>Cambiar ubicación</ion-item>
+    </ion-list>
+   </ion-content>
+</ion-menu>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<ion-content [fullscreen]="true">
+<!--
+  <div class="container">
+    <h4 *ngFor="let post of posts">Burro</h4>
+    <div class="card" style="margin-top: 30px;">
+      <div style="width: 100%; text-align: left;">
+        <span class="bold">My reactions</span>
+      </div>
+      
+      <ion-grid style="margin-top: 10px;">
+        <ion-row>
+          <div *ngIf="reactions">
+          <ion-col size="3" size-sm class="center" *ngFor="let reaction of reactions; let i = index">
+            <img class="img-reaction" src="{{reaction.img}}">
+          </ion-col> 
+          </div>
+          <ion-col size="3" size-sm class="center">
+            <div style="width: 100%;" class="center">
+              <button class="addButton" routerLink="/reactions">
+                <img src="https://img.icons8.com/android/24/null/plus.png"/>
+              </button>
+            </div>
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>  
+    </div>
   </div>
+
+-->
+  <div class="container-center" style="margin-top:-50px;">
+    <button class="button" routerLink="/create-post">Write Something</button>
+  </div>
+
+
+  <ion-button routerLink="/reactions">Reactions</ion-button>
+
+
+
+  <ion-segment value="default" *ngIf="rooms!=null && posts!=null">
+    <ion-segment-button value="default" (click)="tabs_click('posts')">
+      <ion-label>Feed</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="segment" (click)="tabs_click('rooms')">
+      <ion-label>Rooms</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+
+  <div class="container-center" *ngIf="posts!=null && tab_selected=='posts'">
+    <app-post *ngFor="let post of posts" [post]="post" (removed)="openReactModal($event)"></app-post>
+  </div>
+
+
+<div class="container-center">
+  
+
+
+   <!--Show Posts
+  <div class="container-center" *ngIf="tab_selected=='app' && posts">
+    <app-post *ngFor="let post of posts" [post]="post" (click)="viewPost(post)"></app-post>
+  </div>
+-->
+ 
+
+
+  <ion-grid *ngIf="rooms!=null && tab_selected=='rooms'">
+    <ion-row>
+      <ion-col size="6" size-sm class="center" (click)=" openAddGroupOptionsModal(true)">
+        <div class="card room-add" style="background-color: #ffffff;" >
+          <ion-icon style="font-size: 50px;" name="add-outline"></ion-icon>
+        </div>
+      </ion-col>
+     
+        <ion-col size="6" size-sm class="center" *ngFor="let room of rooms" (click)="goToRoom(room)">
+          <div class="card room" style="background-color: #ffffff; padding-top: 50px;" *ngIf="room.name.length<9">
+            <span class="roomTitle">
+             {{room.name}}
+            </span>
+          </div>
+          <div class="card room" style="background-color: #ffffff;" *ngIf="room.name.length>8">
+            <span class="roomTitle">
+              {{ (room.name.length>40)? (room.name | slice:0:40)+'...':(room.name ) }}
+            </span>
+          </div>
+        </ion-col> 
+    
+      
+     
+    </ion-row>
+  </ion-grid> 
+
+</div>
+
+<!--Modal Create Room-->
+
+<ion-modal mode="ios" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.25, 0.5, 0.75]" [isOpen]="room_modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>New Room</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-item lines="full">
+        <ion-label position="stacked">Write the room name</ion-label>
+        <ion-input type="text" [(ngModel)]="room_name" (keyup)="dataConditionModal($event)"></ion-input>
+      </ion-item>
+        <button *ngIf="modalButton" class="boton" style="margin-top: 30px;" (click)="confirm()">Create</button>
+      
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+<!--End Modal Create Room-->
+
+ <!--Group creation options-->
+ <ion-modal mode="ios" [isOpen]="addGroupOptionsModal" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" (willDismiss)="onGroupWillDismiss()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Rooms</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item button detail="false" (click)="openGroupCodeModal(true)">
+          <ion-label>
+            <h3>Add a code</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item button detail="false" (click)="setOpen(true)">
+          <ion-label>
+            <h3>Create</h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+<!--End Group creation options-->
+
+<!--Enter code-->
+
+<ion-modal mode="ios" [isOpen]="groupCodeModal" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.25, 0.5, 0.75]" (willDismiss)="onGroupWillDismiss()">
+  <ng-template>
+    <ion-content>
+      <div class="container-center">
+       <ion-item lines="full">
+          <ion-label position="stacked">Write the group code</ion-label>
+          <ion-input placeholder="Group code" [(ngModel)]="room_code" (keyup)="dataConditionModal($event)"></ion-input>
+       </ion-item>
+        <button *ngIf="modalButton" class="boton" style="margin-top: 30px;" (click)="enterToNewRoom()">Enter to the group</button>
+      </div>
+   
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!--End code-->
+
+<!--Reaction Modal-->
+
+<ion-modal mode="ios" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.25, 0.5, 0.75]" [isOpen]="react_modal" (willDismiss)="onReactWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>React</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-grid>
+        <ion-row>
+          <div *ngIf="reactions">
+          <ion-col size="3" size-sm class="center" *ngFor="let reaction of reactions; let i = index">
+            <img (click)="react(reaction)" class="img-reaction" src="{{reaction.img}}">
+          </ion-col> 
+          </div>
+        </ion-row>
+      </ion-grid>  
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
 </ion-content>

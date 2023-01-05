@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="container-center">
+    <img class="img-profile" src="{{post.user.img}}"><br>
+    <span class="username">{{post.user.username}}</span>
+    <div class="content" (click)="viewPost(post)">
+      <p>{{post.text}}</p>
+    </div>
+  </div>
+  <div class="container" *ngIf="reactions">
+    <span class="bold">Top Reactions</span>
+    <ion-row>
+      <ion-col size="3" size-sm class="center" *ngFor="let reaction of reactions; let i = index">
+        <img class="reactions" src="{{reaction.img}}">
+      </ion-col> 
+    </ion-row>
+  </div>
+  <div class="button" (click)="reactModal()">
+    REACT
+  </div>
+</div>
+
+
+<ion-modal mode="ios" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.25, 0.5, 0.75]" [isOpen]="react_modal" (willDismiss)="onReactWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>React</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="3" size-sm class="center" *ngFor="let reaction of reactionService.userReactions; let i = index">
+            <img (click)="reactToPost(reaction)" class="img-reaction" src="{{reaction.img}}">
+          </ion-col> 
+        </ion-row>
+      </ion-grid>  
+    </ion-content>
+  </ng-template>
+</ion-modal>

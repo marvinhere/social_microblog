@@ -1,0 +1,45 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+  <div class="container" style="text-align: right;">
+    <span class="bold">Xiflat</span>
+  </div>
+ 
+  
+</ion-header>
+  
+<ion-content>
+
+  
+  <div class="container" style="margin-top: 0px; padding: 50px;">
+    <h1 style="font-weight: bold;">Write<br>
+      Something<br>
+      Cool!</h1>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+    <div class="container">
+      <ion-list>
+        <ion-item>
+          <ion-label>Email</ion-label>
+          <ion-input placeholder="example@example.com"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Password</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="container-center" style="margin-top: 70px;">
+      <span *ngIf="error" class="error">{{error}}</span>
+      
+      <button class="button" type="submit">Login</button><br><br><br>
+      <span class="bold">Privacy</span><br><br>
+      <span class="bold">Terms</span>
+    </div>
+ 
+  </form>
+
+
+ 
+  
+
+</ion-content>

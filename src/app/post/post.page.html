@@ -1,0 +1,123 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button class="button-green"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      
+    </ion-buttons>
+    <ion-title style="font-weight: bold; color: black;">Post</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+
+  <div class="container" *ngIf="post">
+    <div class="container-center">
+      <img routerLink="/profile/{{post.post_id}}" class="img-profile" src="{{post.user.img}}"><br>
+      <span routerLink="/profile/{{post.post_id}}" class="username">{{post.user.username}}</span>
+      <div class="content">
+        <p>{{post.text}}</p>
+      </div>
+    </div>
+    <div class="container">
+      <span class="bold">Reactions</span>
+      <div class="container" *ngIf="reactions.length==0">
+        <span>No reactions yet</span>
+      </div>
+      
+
+      <div style="margin-top: 10px;" *ngIf="reactions">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4" size-sm *ngFor="let react of reactions" style="text-align: center; font-weight:bold;font-size:15px;">
+              <img *ngIf="react.owner==true" class="reactions" (click)="removeMyReaction()" src="{{react.img}}">
+              <img *ngIf="!react.owner && react.owner != 'hide'" class="reactions" src="{{react.img}}">
+              <!--<span>{{react.react}}</span>-->
+            </ion-col> 
+          </ion-row>
+        </ion-grid>  
+      </div>
+      <div class="container-center">
+        <ion-icon name="chevron-down-outline" (click)="getReactions()"></ion-icon>
+      </div>
+    </div>
+    <ion-item-divider></ion-item-divider>
+    <div class="button" style="margin-top:20px;">
+      Add a reaction
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="container">
+      <span class="bold" style="color: rgb(129, 129, 129);">Comments</span>
+      <button class="button-blue" routerLink="/create-comment">Write a comment</button>
+      <div *ngIf="comments">
+        <div class="card" *ngIf="commentCreated!=null">
+          <ion-item lines="none">
+            <ion-avatar slot="start">
+              <img alt="Silhouette of a person's head" src="{{commentCreated.user.img}}" />
+            </ion-avatar>
+            <ion-label>
+              {{commentCreated.user.username}}
+            </ion-label>
+          </ion-item>
+          <div class="content">
+            {{commentCreated.text}}
+          </div>
+          
+          
+          <div style="width: 100%; text-align:center; font-weight: bold;">
+            {{ nFormatter(commentCreated.likesCount, 1)}} likes
+          </div>
+          <ion-item-divider></ion-item-divider>
+          <div>
+            
+          </div>
+
+        </div>
+      <div class="card" *ngFor="let comment of comments; let i = index">
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img alt="Silhouette of a person's head" src="{{comment.user.img}}" />
+          </ion-avatar>
+          <ion-label>
+            {{comment.user.username}}
+          </ion-label>
+        </ion-item>
+        <div class="content">
+          {{comment.text}}
+        </div>
+        
+        
+        <div style="width: 100%; text-align:center; font-weight: bold;">
+          {{ nFormatter(comment.likesCount, 1)}} likes
+        </div>
+        <ion-item-divider></ion-item-divider>
+        <div>
+          
+        </div>
+        <div *ngIf="comment.likes">
+          <div *ngIf="!comment.likes[uid]" class="button" style="margin-top:20px;" (click)="like(comment.post_id,comment.c_id,false,i)">
+            Like this
+          </div>
+
+          <div *ngIf="comment.likes[uid]" class="button" style="margin-top:20px;" (click)="like(comment.post_id,comment.c_id,true,i)">
+            Unlike this
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
+  </div>
+
+
+
+
+</ion-content>

@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      
+    </ion-buttons>
+    <ion-title style="font-weight: bold; color: black;">Comment</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="commentForm" (ngSubmit)="createComment(commentForm.value)">
+   <div class="container">
+    <div class="card">
+      <div class="container-center">
+        <img class="img-profile" src="{{post.user.img}}"><br>
+        <span class="username">{{post.user.username}}</span>
+        <div class="content">
+          <p>{{post.text}}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top:20px; margin-bottom:20px;">
+      <span class="label">Comment</span>
+    </div>
+    <div class="card">
+      <ion-list>
+        <ion-item>
+          <ion-textarea placeholder="Type something here" [autoGrow]="true"
+            value="" formControlName="text">
+          </ion-textarea>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <div class="container-center">
+    <button class="button">COMMENT</button>
+  </div>
+  </form>
+
+</ion-content>

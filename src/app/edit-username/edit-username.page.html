@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button class="button-green"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      
+    </ion-buttons>
+    <ion-title style="font-weight: bold; color: black;">Edit Username</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <form [formGroup]="usernameForm" (ngSubmit)="save(usernameForm.value)">
+      <span class="label">Your current username is: {{username}}</span>
+      <ion-list>
+        <ion-item>
+          <ion-label>Username</ion-label>
+          <ion-input formControlName="username"></ion-input>
+        </ion-item>
+      </ion-list>
+  
+      <span class="error" *ngIf="error">Username already exist</span>
+      
+      <div class="container-center">
+        <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+        <button type="submit" class="button" *ngIf="!loading">Save</button>
+      </div>
+    </form>
+   
+  </div>
+
+</ion-content>

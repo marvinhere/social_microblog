@@ -1,0 +1,76 @@
+.username{
+     font-size: 14px;
+     font-weight: bold;
+}
+.card{
+    box-shadow: 1px 10px 58px 0px rgba(0,0,0,0.20);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 35px;
+}
+
+.container-center{
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+}
+
+.container{
+    width: 100%;
+    padding: 20px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Clear floats after image containers */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .img-profile{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+
+  .content{
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .bold{
+    font-weight: bold;
+  }
+
+  .reactions{
+    border-radius: 10px;
+    height: 70px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .button{
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .center{
+    text-align: center;
+  }
+
+  .img-reaction{
+    border-radius: 10px;
+    height: 70px;
+    width: 100%;
+    object-fit: cover;
+  }

@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+  <div class="container" style="text-align: right;">
+    <span class="bold">Register</span>
+  </div>
+ 
+  
+</ion-header>
+  
+<ion-content>
+
+  
+  <div class="container" style="margin-top: 50px; padding: 50px;">
+    <h1 style="font-weight: bold;">Write<br>
+      Something<br>
+      Cool!</h1>
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="createUser(registerForm.value)">
+    <div class="container">
+      <ion-list>
+        <ion-item>
+          <ion-label>Username</ion-label>
+          <ion-input formControlName="username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Email</ion-label>
+          <ion-input formControlName="email" placeholder="example@example.com"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Password</ion-label>
+          <ion-input formControlName="password" type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="container-center" style="margin-top: 70px;">
+      <span *ngIf="error" class="error">{{error}}</span>
+      <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+      <button class="button" type="submit" *ngIf="!loading && !registerForm.controls['username'].errors && !registerForm.controls['email'].errors && !registerForm.controls['password'].errors">Create user</button><br><br><br>
+      <span class="bold">Privacy</span><br><br>
+      <span class="bold">Terms</span>
+    </div>
+ 
+  </form>
+  
+
+</ion-content>

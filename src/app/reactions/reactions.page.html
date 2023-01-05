@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button class="button-green"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      
+    </ion-buttons>
+    <ion-title style="font-weight: bold; color: black;">Reactions</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+
+<ion-content>
+
+  <div class="container-center" *ngIf="photo">
+    <img src="{{photo}}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 100%;">
+    <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+    <button class="button" (click)="saveReaction()" *ngIf="!loading">Save</button>
+  </div>
+
+
+  <div class="container" *ngIf="!loading">
+    <div class="card">
+      <ion-grid>
+        <ion-row>
+          <div *ngIf="reactions">
+          <ion-col size="3" size-sm class="center" *ngFor="let reaction of reactions; let i = index">
+            <img (click)="deleteAlert(reaction)" class="img-reaction" src="{{reaction.img}}">
+          </ion-col> 
+          </div>
+          <ion-col size="3" size-sm class="center" *ngIf="reactions && reactions.length<2">
+            <div style="width: 100%;" class="center">
+              <button class="addButton" (click)="takePhoto()">
+                <img src="https://img.icons8.com/android/24/null/plus.png"/>
+              </button>
+            </div>
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>  
+     
+
+     
+   
+    </div>
+  </div>
+
+
+
+</ion-content>

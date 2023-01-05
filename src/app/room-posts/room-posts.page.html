@@ -1,0 +1,116 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button class="button-green"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-buttons slot="end">
+      <ion-button class="" (click)="createNewPost()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+      <ion-button class="" (click)="openMembersModal()">
+        <ion-icon name="people-outline"></ion-icon>
+      </ion-button>
+      <ion-button class="" (click)="setInfoOpen(true)">
+        <ion-icon name="arrow-redo-outline"></ion-icon>
+      </ion-button>
+     
+   </ion-buttons>
+
+    <ion-title style="font-weight: bold; color: black;">Room</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <div class="container-center">
+    <div class="card">
+      {{room.name}}
+      <button *ngIf="userRoomData && userRoomData.owner!=true && userRoomData.following==false" class="button" style="margin-top: 20px;" (click)="follow(true)">Follow</button>
+      <button *ngIf="userRoomData && userRoomData.owner!=true && userRoomData.following==true" class="button" style="margin-top: 20px;" (click)="follow(false)">Unfollow</button><br>
+      <button class="delete-button" *ngIf="userRoomData && userRoomData.owner==true" style="margin-top: 20px;" (click)="deleteRoomAlert()">Delete</button>
+    </div>
+  </div>
+
+  <div style="padding: 10px;">
+    <ion-card color="light" class="card-message" *ngIf="room!=null" (click)="createNewPost()">
+      <ion-card-header>
+        <ion-card-title>{{room.name}}</ion-card-title>
+        <button class="delete-button" *ngIf="userRoomData && userRoomData.owner==true" style="margin-top: 20px;">Delete</button>
+      </ion-card-header>
+    </ion-card>
+  </div>
+
+  <div class="container-center" *ngIf="posts">
+    <app-post *ngFor="let post of posts" [post]="post" (click)="viewPost(post)"></app-post>
+  </div>
+
+ 
+
+
+  <!--Modal Members-->
+
+  <ion-modal [isOpen]="membersModal" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.25, 0.5, 1]" (willDismiss)="onMembersWillDismiss()">
+   
+    <ng-template>
+      <div class="container-center">
+        <h3><strong>Members</strong></h3>
+      </div>
+      <ion-content class="ion-padding">
+        <ion-list>
+         
+          <ion-item-sliding *ngFor="let member of members; let i = index">
+        
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="{{member.img}}"/>
+              </ion-avatar>
+              <ion-label>
+                {{member.username}}
+              </ion-label>
+            </ion-item>
+        
+            <ion-item-options side="end" *ngIf="userRoomData && userRoomData.owner!=true">
+              <ion-item-option color="danger" (click)="removeUser(member.uid,i)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+
+        </ion-list>
+        
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+
+
+  <!--Room share-->
+  <ion-modal [isOpen]="infoModal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Room Info</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setInfoOpen(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <ion-item class="selectable">
+            <ion-label>
+              <h1 style="font-weight: bold;">Group Id</h1>
+              <p>{{room.room_id}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <small>Copy this room id</small>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+ 
+
+</ion-content>

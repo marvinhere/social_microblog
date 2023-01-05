@@ -1,0 +1,30 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button class="button-green"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      
+    </ion-buttons>
+    <ion-title style="font-weight: bold; color: black;">Users's ideas</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+
+  <div class="container-center">
+    <img class="img-profile" src="{{posts[0].user.img}}"><br>
+    <span class="username">{{posts[0].user.username}}</span><br>
+    <button class="button" style="width:150px;font-size:15px;margin-top: 20px;">Follow</button>
+  </div>
+
+  <div class="container">
+     <div class="container-center" style="margin-top: 20px;" *ngIf="posts">
+        <app-post *ngFor="let post of posts" [post]="post" (click)="viewPost(post)"></app-post>
+      </div>
+  </div>
+ 
+
+</ion-content>

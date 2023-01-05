@@ -1,0 +1,65 @@
+<ion-header class="ion-no-border ion-text-center" mode="md">
+ 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+       <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      
+    </ion-buttons>
+    <ion-title style="font-weight: bold; color: black;">New Post</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+
+<ion-content>
+  <div style="padding: 10px;" *ngIf="room!=null">
+    <ion-card color="light" class="card-message" >
+      <ion-card-header>
+        <ion-card-subtitle>Posting in room</ion-card-subtitle>
+        <ion-card-title>{{room.name}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+ 
+
+  <form [formGroup]="postForm" (ngSubmit)="createPost(postForm.value)">
+
+   
+    <div class="container">
+      <span class="label">Write something cool</span><br>
+      <small style="font-size: 12px;">Use # to write hashtags</small>
+      
+      <ion-list style="margin-top: 50px;">
+        <ion-item>
+          <ion-textarea placeholder="Type something here" [autoGrow]="true"
+            value="" formControlName="text">
+          </ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="type=='simple'">
+        <ion-item>
+          <ion-label>Select your mood</ion-label>
+          <ion-select placeholder="Select mood" formControlName="mood">
+            <ion-select-option value="happy">😀 Happy</ion-select-option>
+            <ion-select-option value="sad">😀 Sad</ion-select-option>
+            <ion-select-option value="funny">😀 Funny</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+  
+    </div>
+    <div class="container">
+      <p>Your post will be visible for 7 days.</p>
+      <small style="font-size: 12px;">Use at least one hashtag</small>
+    </div>
+
+    <div class="bottom-div" *ngIf="!loading">
+      <button class="button" *ngIf="type=='simple' && !postForm.controls['text'].errors && !postForm.controls['mood'].errors">CREATE POST</button>
+      <button class="button" *ngIf="type=='room' && !postForm.controls['text'].errors">CREATE POST</button>
+    </div>
+  </form>
+
+</ion-content>
