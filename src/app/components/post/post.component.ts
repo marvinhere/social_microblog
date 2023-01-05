@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 import { PostService } from 'src/app/services/post.service';
 import { ReactionsService } from 'src/app/services/reactions.service';
 
@@ -17,9 +19,11 @@ export class PostComponent implements OnInit {
   reactions:any = [];
   userReactions:Array<any> = []
   savedReaction:any = null
-  constructor(public reactionService:ReactionsService,private postService:PostService,private reactionsService:ReactionsService, private router:Router) { }
+  deleted:boolean = false;
+  constructor(private alertController: AlertController,public authService:AuthService,public reactionService:ReactionsService,private postService:PostService,private reactionsService:ReactionsService, private router:Router) { }
 
   ngOnInit() {
+    this.getReactions(this.post.post_id)
     
   }
 
@@ -74,5 +78,45 @@ export class PostComponent implements OnInit {
     }
     
   }
+
+  isOwner():boolean{
+    if(this.post.uid == this.authService.getUID()){
+      return true;
+    }
+    return false
+  }
+
+  deletePost(){
+    this.postService.deletePost(this.post.post_id)
+    this.deleted = true;
+  }
+
+  async deletePostAlert() {
+    const alert = await this.alertController.create({
+      header: 'Are you sure?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            //
+          },
+        },
+        {
+          text: 'Delete',
+          role: 'confirm',
+          handler: () => {
+           //
+            this.deletePost();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+  }
+
  
 }

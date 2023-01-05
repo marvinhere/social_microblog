@@ -14,13 +14,12 @@
 
 <ion-content>
 
-  <div class="container-center">
-    <img class="img-profile" src="{{posts[0].user.img}}"><br>
-    <span class="username">{{posts[0].user.username}}</span><br>
-    <button class="button" style="width:150px;font-size:15px;margin-top: 20px;">Follow</button>
+  <div class="container-center" *ngIf="user!=null">
+    <img class="img-profile" src="{{user.img}}"><br>
+    <span class="username">{{user.username}}</span><br>
   </div>
 
-  <div class="container">
+  <div class="container" *ngIf="post!=null">
      <div class="container-center" style="margin-top: 20px;" *ngIf="posts">
         <app-post *ngFor="let post of posts" [post]="post" (click)="viewPost(post)"></app-post>
       </div>

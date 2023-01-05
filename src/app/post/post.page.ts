@@ -22,8 +22,13 @@ export class PostPage implements OnInit {
 
   commentCreated:any = null;
   reactions:any = [];
-  
-  constructor(private authService:AuthService,private postService:PostService, private router:Router,private reactionsService:ReactionsService) {
+
+
+
+  react_modal:boolean = false;
+ 
+  reactionsLoading:boolean = false;
+  constructor(private authService:AuthService,private postService:PostService, private router:Router,public reactionsService:ReactionsService) {
 
     this.postService.commentCreated.subscribe(data=>{
       this.commentCreated = data;
@@ -32,10 +37,13 @@ export class PostPage implements OnInit {
    }
 
   ngOnInit() {
+    this.reactions = []
+    this.reactionsService.deleteOldPostsReactions();
     this.postService.init()
     this.commentCreated = null;
     this.uid = this.authService.getUID();
     this.getPost();
+    this.getMyReaction();
     this.getReactions();
   }
 
@@ -96,12 +104,15 @@ export class PostPage implements OnInit {
   }
 
   getReactions(){
+    
+    this.reactionsLoading = true;
     this.reactionsService.getReactionsForPost(this.post.post_id).subscribe(data=>{
       data.then((datos:any)=>{
         this.reactions = datos;
-        console.log("lista",this.reactions)
-        this.getMyReaction();
+        this.reactionsLoading = false;
       })
+    },error=>{
+      this.reactionsLoading = false;
     })
   }
 
@@ -120,5 +131,20 @@ export class PostPage implements OnInit {
   removeMyReaction(){
     this.reactions.shift()
     this.reactionsService.removeReact(this.post.post_id);
+  }
+
+
+  openReactModal(){
+      this.react_modal = true;    
+  }
+
+  onReactWillDismiss(ev:any){
+    this.react_modal = false;
+  }
+
+  react(reaction:any){
+    this.reactions.unshift(reaction)
+    this.reactionsService.reactToPost(reaction,this.post.post_id);
+    this.react_modal = false;
   }
 }

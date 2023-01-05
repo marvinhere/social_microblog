@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { getDatabase, ref, set, onValue, get } from "firebase/database";
+import { Observable, of } from 'rxjs';
 import { FirebaseService } from './firebase.service';
 
 @Injectable({
@@ -32,13 +33,15 @@ export class UserService {
 
   }
 
-  async userData(uid:any){
+  userData(uid:any):Observable<any>{
     let db = getDatabase(this.firebaseService.app);
 
     var dbRef = ref(db, "users/"+uid);
 
-    await get(dbRef).then(snapshot=>{
-      this.user= snapshot.val();
+    let user =  get(dbRef).then(snapshot=>{
+      return snapshot.val();
     })
+
+    return of(user);
   }
 }

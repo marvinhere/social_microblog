@@ -70,7 +70,7 @@ export class PostService {
           let data = {
             user:{
               username:user.username,
-             // img:user.img
+              img:user.img
             },
             uid:uid,
             text:text,
@@ -357,5 +357,15 @@ export class PostService {
     });
   
 
+  }
+
+  deletePost(post_id:any){
+    const db = getDatabase(this.firebaseService.app);
+    const postRef = ref(db);
+
+    let updates:any = {}
+    updates['/posts/'+ post_id] = null;
+    updates['/user-posts/' + this.authService.getUID() + '/' + post_id] = null;
+    update(postRef,updates);
   }
 }

@@ -10,17 +10,21 @@ import { UserService } from '../services/user.service';
 })
 export class ProfilePage implements OnInit {
 
-  posts:any;
+  posts:any = null;
   user:any = null;
   constructor(private postService:PostService, private userService:UserService,private router:Router,private route:ActivatedRoute) { }
 
   ngOnInit() {
-    //this.getUser();
+    this.getUser();
     this.getPosts();
   }
 
   async getUser(){
-    this.user = await this.userService.userData(this.route.snapshot.paramMap.get('id'));
+    this.user = await this.userService.userData(this.route.snapshot.paramMap.get('id')).subscribe(data=>{
+      data.then((user:any)=>{
+        this.user = user;
+      })
+    })
     /*
     this.user = {
       img:'https://www.cooperativa.cl/noticias/site/artic/20220718/imag/foto_0000000420220718090012.jpg',
@@ -33,7 +37,6 @@ export class ProfilePage implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
     await this.postService.getPostsByUser(id);
     this.posts = this.postService.userPosts;
-    
   }
 
   //Go to post page

@@ -148,6 +148,7 @@ export class ReactionsService {
     let data:any = {}
     data['posts_reactions/'+post_id+"/"+this.authService.getUID()]=reaction.img;
     update(refDB(db),data);
+    console.log("reaccciono")
   }
 
   removeReact(post_id:any){
@@ -175,5 +176,9 @@ export class ReactionsService {
     })
 
     return of(reaction)
+  }
+
+  deleteOldPostsReactions(){
+    this.postsReactions = []
   }
 }

@@ -16,8 +16,8 @@
 
   <div class="container" *ngIf="post">
     <div class="container-center">
-      <img routerLink="/profile/{{post.post_id}}" class="img-profile" src="{{post.user.img}}"><br>
-      <span routerLink="/profile/{{post.post_id}}" class="username">{{post.user.username}}</span>
+      <img routerLink="/profile/{{post.uid}}" class="img-profile" src="{{post.user.img}}"><br>
+      <span routerLink="/profile/{{post.uid}}" class="username">{{post.user.username}}</span>
       <div class="content">
         <p>{{post.text}}</p>
       </div>
@@ -41,11 +41,12 @@
         </ion-grid>  
       </div>
       <div class="container-center">
+        <ion-progress-bar type="indeterminate" *ngIf="reactionsLoading"></ion-progress-bar>
         <ion-icon name="chevron-down-outline" (click)="getReactions()"></ion-icon>
       </div>
     </div>
     <ion-item-divider></ion-item-divider>
-    <div class="button" style="margin-top:20px;">
+    <div class="button" style="margin-top:20px;" (click)="openReactModal()">
       Add a reaction
     </div>
   </div>
@@ -116,6 +117,29 @@
       </ion-infinite-scroll>
     </div>
   </div>
+
+  <!--Reaction Modal-->
+
+<ion-modal mode="ios" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.25, 0.5, 0.75]" [isOpen]="react_modal" (willDismiss)="onReactWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>React</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-grid>
+        <ion-row>
+          <div *ngIf="reactionsService.userReactions">
+          <ion-col size="3" size-sm class="center" *ngFor="let reaction of reactionsService.userReactions; let i = index">
+            <img (click)="react(reaction)" class="img-reaction" src="{{reaction.img}}">
+          </ion-col> 
+          </div>
+        </ion-row>
+      </ion-grid>  
+    </ion-content>
+  </ng-template>
+</ion-modal>
 
 
 
